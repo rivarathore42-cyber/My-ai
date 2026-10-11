@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Galaxy AI</title>
+<link rel="stylesheet" href="/static/voice/voice_wakeup.css">
+<link rel="stylesheet" href="/static/voice/permission_modal.css">
+<link rel="stylesheet" href="/static/voice/app.css">
+</head>
+<body class="galaxy-dark">
+<div id="app">
+  <header class="topbar galaxy-glass">
+    <div class="brand">Galaxy AI</div>
+    <span id="status" class="pill" data-kind="idle">Checking…</span>
+    <button type="button" id="unpair" class="ghost" hidden>Unpair</button>
+  </header>
+
+  <main id="pairCard" class="pair-card galaxy-glass" hidden>
+    <h2>Is device ko pair karein</h2>
+    <p class="muted">Server ke log me ek 8-digit pairing code dikhta hai. Ek baar daalein; browser phir apna session rakhega.</p>
+    <input id="pairCode" class="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="1234 5678">
+    <button type="button" id="pairBtn" class="btn">Pair this device</button>
+    <p id="pairMsg" class="muted" aria-live="polite"></p>
+  </main>
+
+  <section id="chat">
+    <div id="messages" aria-live="polite"></div>
+    <form id="composer" class="composer galaxy-glass" onsubmit="return false">
+      <textarea id="input" rows="1" placeholder="Galaxy AI se kuch bhi poochhiye…"></textarea>
+      <button type="button" id="send" class="send" aria-label="Send">&uarr;</button>
+    </form>
+  </section>
+</div>
+
+<!-- Voice: the orb, the Voice & Wake-Up settings, and the tap card (behaviour in voice_ui.js). -->
+<button type="button" class="gv-fab" id="gvFab" aria-haspopup="dialog" aria-controls="gvModal">Voice</button>
+<div class="voice-modal-backdrop" id="gvModal">
+  <div class="galaxy-glass voice-modal" role="dialog" aria-modal="true" aria-labelledby="gvTitle">
+    <section class="voice-settings">
+      <h3 id="gvTitle">Voice &amp; Wake-Up</h3>
+      <p class="muted gv-note" id="gvEngine">Offline engine (Vosk). Your audio stays on this device.</p>
+      <div class="voice-row">
+        <div><span>Voice Wake-Up (Hey Galaxy / Ok Galaxy)</span>
+          <small>Listens only while on. Runs offline, on this device.</small></div>
+        <label class="switch"><input type="checkbox" id="gvWake" role="switch" aria-label="Voice Wake-Up"><span class="track"></span></label>
+      </div>
+      <div class="voice-row">
+        <div><span>Microphone sensitivity</span>
+          <small>Low needs a clear wake phrase at the start. High also accepts near-misses of "Galaxy".</small></div>
+        <div>
+          <input type="range" id="gvSens" class="sensitivity" min="0" max="2" step="1" value="1" aria-label="Microphone sensitivity">
+          <div class="sensitivity-labels" aria-hidden="true"><span>Low</span><span>Medium</span><span>High</span></div>
+        </div>
+      </div>
+      <div class="voice-row">
+        <div><span>Audio feedback (TTS)</span>
+          <small>Speaks voice-command answers with this device's own voices only.</small></div>
+        <label class="switch"><input type="checkbox" id="gvTts" role="switch" aria-label="Audio feedback"><span class="track"></span></label>
+      </div>
+      <p class="muted gv-note" id="gvStatus" aria-live="polite">Wake-up is off.</p>
+    </section>
+    <div class="gv-actions"><button type="button" class="btn" id="gvDone">Done</button></div>
+  </div>
+</div>
+
+<!-- Permission: every Android or platform action waits here for the user's decision (behaviour in permission_modal.js). -->
+<div class="perm-backdrop" id="gvPermModal" aria-hidden="true">
+  <div class="perm-card galaxy-glass" role="dialog" aria-modal="true" aria-labelledby="gvPermTitle">
+    <div class="perm-head">
+      <span class="perm-badge" id="gvPermBadge" aria-hidden="true">G</span>
+      <span class="perm-dot" id="gvPermDot" data-tone="amber" aria-hidden="true"></span>
+      <div class="perm-titles">
+        <h3 id="gvPermTitle"></h3>
+        <p class="muted perm-dest" id="gvPermDest"></p>
+      </div>
+    </div>
+    <p class="perm-why" id="gvPermWhy"></p>
+    <div class="perm-preview" id="gvPermPreview" hidden></div>
+    <p class="perm-meta" id="gvPermMeta"></p>
+    <p class="perm-status" id="gvPermStatus" aria-live="polite"></p>
+    <div class="perm-actions" id="gvPermActions"></div>
+    <button type="button" class="perm-link" id="gvPermRevoke" hidden>Revoke Always Allow</button>
+  </div>
+</div>
+
+<div class="galaxy-glass tap-card" id="gvTap" hidden>
+  <p class="muted" id="gvTapLabel"></p>
+  <button type="button" class="btn" id="gvTapGo">Open</button>
+  <button type="button" class="btn gv-ghost" id="gvTapCancel">Cancel</button>
+</div>
+
+<script src="/static/voice/voice_wakeup.js"></script>
+<script src="/static/voice/vendor/vosk.js"></script>
+<script src="/static/voice/voice_wakeup_vosk.js"></script>
+<script src="/static/voice/permission_modal.js"></script>
+<script src="/static/voice/voice_ui.js"></script>
+<script src="/static/voice/app.js"></script>
+</body>
+</html>
